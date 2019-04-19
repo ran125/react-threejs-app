@@ -6,3 +6,25 @@
     line-height: 50px;
     background-color:goldenrod
 }
+.loginout{
+    background-color: aqua;
+    height:50px;
+    padding:0px 20px;
+    line-height: 50px;
+}
+.login{
+    background-color: yellow;
+    height:50px;
+    padding:0px 20px;
+    line-height: 50px;
+}
+.warning{
+    height:30px;
+    background-color: bisque;
+
+}
+.inputbox{
+    height:50px;
+    width:100px;
+    background-color: azure
+}
