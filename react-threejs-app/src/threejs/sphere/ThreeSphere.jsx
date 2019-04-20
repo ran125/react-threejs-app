@@ -6,22 +6,22 @@ export default class Sphere {
       this.scene =props.scene;
       }
       init(){
-        let  group = new THREE.Group()
-        initParticles();
-        initLine();
+        this.group = new THREE.Group()
+        this.initParticles();
+        this.initLine();
 
       }
       initParticles(){
         let maxParticleCount = 1000
-        let particleCount = 500
+        this.particleCount = 500
         let r = 500
-        let rHalf = r;
-        let particlesData =[];
+        this.rHalf = r;
+        this.particlesData =[];
         let segments = maxParticleCount * maxParticleCount
-        let positions = new Float32Array(segments * 3)
-        let colors = new Float32Array(segments * 3)
+       this.positions = new Float32Array(segments * 3)
+        this.colors = new Float32Array(segments * 3)
        
-        scene.add(group)
+        this.scene.add(this.group)
         var pMaterial = new THREE.PointsMaterial({
           color: 0xffffff,
           size: 3,
@@ -32,7 +32,7 @@ export default class Sphere {
         //点
        let  particles = new THREE.BufferGeometry()
 
-       let particlePositions = new Float32Array(maxParticleCount * 3)
+       this.particlePositions = new Float32Array(maxParticleCount * 3)
 
         for (var i = 0; i < maxParticleCount; i++) {
           var aa = -1;
@@ -49,12 +49,12 @@ export default class Sphere {
           var y = _r * Math.cos(a) * Math.sin(b)
           var z = _r * Math.sin(a)
   
-          particlePositions[i * 3] = x
-          particlePositions[i * 3 + 1] = y
-          particlePositions[i * 3 + 2] = z
+          this.particlePositions[i * 3] = x
+          this.particlePositions[i * 3 + 1] = y
+          this.particlePositions[i * 3 + 2] = z
   
           // add it to the geometry
-          particlesData.push({
+          this.particlesData.push({
             velocity: new THREE.Vector3(
               -1 + Math.random() * 2,
               -1 + Math.random() * 2,
@@ -66,12 +66,12 @@ export default class Sphere {
 
         particles.addAttribute(
           'position',
-          new THREE.BufferAttribute(particlePositions, 3).setDynamic(true)
+          new THREE.BufferAttribute(this.particlePositions, 3).setDynamic(true)
         )
-        particles.setDrawRange(0, particleCount)
+        particles.setDrawRange(0, this.particleCount)
         // create the particle system
-      let  pointCloud = new THREE.Points(particles, pMaterial)
-        group.add(pointCloud)
+      this.pointCloud = new THREE.Points(particles, pMaterial)
+      this.group.add(this.pointCloud)
       }
 
       initLine(){
@@ -79,11 +79,11 @@ export default class Sphere {
 
       linegeometry.addAttribute(
         'position',
-        new THREE.BufferAttribute(positions, 3).setDynamic(true)
+        new THREE.BufferAttribute(this.positions, 3).setDynamic(true)
       )
       linegeometry.addAttribute(
         'color',
-        new THREE.BufferAttribute(colors, 3).setDynamic(true)
+        new THREE.BufferAttribute(this.colors, 3).setDynamic(true)
       )
       linegeometry.computeBoundingSphere()
 
@@ -95,56 +95,59 @@ export default class Sphere {
         transparent: true
       })
 
-      linesMesh = new THREE.LineSegments(linegeometry, material)
-      group.add(linesMesh)
+      this.linesMesh = new THREE.LineSegments(linegeometry, material)
+      this.group.add(this.linesMesh)
       }
 
       initAnimation(){
       let numConnected = 0
 
-      for (let i = 0; i < particleCount; i++)
-        particlesData[i].numConnections = 0
+      for (let i = 0; i < this.particleCount; i++)
+      this.particlesData[i].numConnections = 0
 
-      for (let i = 0; i < particleCount; i++) {
+      for (let i = 0; i < this.particleCount; i++) {
         // get the particle
-        let particleData = particlesData[i]
+        let particleData =  this.particlesData[i]
 
-        particlePositions[i * 3] += particleData.velocity.x
-        particlePositions[i * 3 + 1] += particleData.velocity.y
-        particlePositions[i * 3 + 2] += particleData.velocity.z
+        this.particlePositions[i * 3] += particleData.velocity.x
+        this.particlePositions[i * 3 + 1] += particleData.velocity.y
+        this.particlePositions[i * 3 + 2] += particleData.velocity.z
 
         if (
-          particlePositions[i * 3 + 1] < -rHalf ||
-          particlePositions[i * 3 + 1] > rHalf
+          this.particlePositions[i * 3 + 1] < -this.rHalf ||
+          this.particlePositions[i * 3 + 1] > this.rHalf
         )
           particleData.velocity.y = -particleData.velocity.y;
 
         if (
-          particlePositions[i * 3] < -rHalf ||
-          particlePositions[i * 3] > rHalf
+          this.particlePositions[i * 3] < -this.rHalf ||
+          this.particlePositions[i * 3] > this.rHalf
         )
           particleData.velocity.x = -particleData.velocity.x
 
         if (
-          particlePositions[i * 3 + 2] < -rHalf ||
-          particlePositions[i * 3 + 2] > rHalf
+          this.particlePositions[i * 3 + 2] < -this.rHalf ||
+          this.particlePositions[i * 3 + 2] > this.rHalf
         )
           particleData.velocity.z = -particleData.velocity.z
 
         if (
-          effectController.limitConnections &&
-          particleData.numConnections >= effectController.maxConnections
+          this.effectController.limitConnections &&
+          particleData.numConnections >= this.effectController.maxConnections
         )
           continue
       }
 
-      linesMesh.geometry.setDrawRange(0, numConnected * 2)
-      linesMesh.geometry.attributes.position.needsUpdate = true
-      linesMesh.geometry.attributes.color.needsUpdate = true
+      this.linesMesh.geometry.setDrawRange(0, numConnected * 2)
+      this.linesMesh.geometry.attributes.position.needsUpdate = true
+      this.linesMesh.geometry.attributes.color.needsUpdate = true
 
-      pointCloud.geometry.attributes.position.needsUpdate = true
+      this.pointCloud.geometry.attributes.position.needsUpdate = true
 
-      group.rotation.y = time * 0.1
+      // this.group.rotation.y = time * 0.1
+      }
+      initRender(){
+        // this.group.rotation.y = time * 0.1
       }
 
       

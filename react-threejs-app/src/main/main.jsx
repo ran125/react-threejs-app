@@ -4,6 +4,7 @@ import '../threejs/ThreeCube/ThreeCube.css';
 
 import ThreeScene from '../threejs/ThreeScene/ThreeScene'
 import Cube from '../threejs/cube/ThreeCube'
+import Sphere from '../threejs/sphere/ThreeSphere'
 import Menu from '../Menu/menu'
 
 export default class Main extends Component{
