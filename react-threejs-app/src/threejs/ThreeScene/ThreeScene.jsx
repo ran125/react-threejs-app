@@ -1,6 +1,6 @@
 /***threejs cube shader */
 
-import '../ThreeCube/ThreeCube.css';
+// import '../ThreeCube/ThreeCube.css';
 import * as THREE from 'three';
 import orbtCtrls from 'three-orbit-controls'
   const OrbitControls = orbtCtrls(THREE);
@@ -8,14 +8,14 @@ import orbtCtrls from 'three-orbit-controls'
   //export default class ThreeScene extends Component{
   export default class ThreeScene {
  
-  // constructor(props) {
-  //   this.setState({scene:null})
-  // }
+  constructor(props) {
+  this.animatefn=null;
+  }
 
   //在组建输出到dom 后会执行componentdidmount() 钩子
   // componentDidMount(){
   // }
-
+  
   initScene(){
     let _this =this;
     this.width =document.getElementById('WebGL-output').clientWidth;
@@ -50,6 +50,9 @@ import orbtCtrls from 'three-orbit-controls'
    animate() {
     window.requestAnimationFrame(()=>{this.animate();});
     this.renderer.render(this.scene, this.camera );
+    if(this.isFn(this.animatefn)){
+      this.animatefn();
+    }
   }
   onWindowResize(){
     this.camera.aspect = this.width/this.height;
@@ -57,17 +60,25 @@ import orbtCtrls from 'three-orbit-controls'
   
     this.renderer.setSize( this.width, this.height );
   }
-
+  isFn(obj) {
+    return Object.prototype.toString.call(obj) === '[object Function]';
+  }
+  setAnimateFn(fn){
+    this.animatefn =fn;
+  }
+  getAnimateFn(){
+   return this.animatefn
+  }
  //组建从dom 中移除会调用componentWillUnmount 钩子函数
-//  componentWillUnmount(){
-//   //  _this =null;
-//  }
-//  render(){
-//    return(
-//      <div id='scene'>
-//      <Sphere  scene={this.scene} />
-//      </div>
-//    )
-//  }
+  //  componentWillUnmount(){
+  //   //  _this =null;
+  //  }
+  //  render(){
+  //    return(
+  //      <div id='scene'>
+  //      <Sphere  scene={this.scene} />
+  //      </div>
+  //    )
+  //  }
 }
 

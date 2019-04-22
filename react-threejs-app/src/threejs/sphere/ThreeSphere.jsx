@@ -4,21 +4,34 @@ export default class Sphere {
     constructor(props) {
       // super(props);
       this.scene =props.scene;
+      this.layer =1;
+      this.cu = props.threeScene;
       }
       init(){
         this.group = new THREE.Group()
+        console.log(this.group)
+        // this.group.layers.set(this.layer)
         this.initParticles();
         this.initLine();
-
+        this.cu.setAnimateFn((fn)=>{this.initAnimation()})
+        // this.initSphere();
       }
+      // initSphere(){
+      //   var geometry = new THREE.SphereGeometry( 1, 32, 32 );
+      //   var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+      //   var sphere = new THREE.Mesh( geometry, material );
+      //   sphere.layers.set(this.layer)
+      //   this.scene.add( sphere );
+      // }
+
       initParticles(){
         let maxParticleCount = 1000
         this.particleCount = 500
-        let r = 500
+        let r = 1
         this.rHalf = r;
         this.particlesData =[];
         let segments = maxParticleCount * maxParticleCount
-       this.positions = new Float32Array(segments * 3)
+        this.positions = new Float32Array(segments * 3)
         this.colors = new Float32Array(segments * 3)
        
         this.scene.add(this.group)
@@ -71,6 +84,7 @@ export default class Sphere {
         particles.setDrawRange(0, this.particleCount)
         // create the particle system
       this.pointCloud = new THREE.Points(particles, pMaterial)
+      this.pointCloud.layers.set(this.layer)
       this.group.add(this.pointCloud)
       }
 
@@ -96,6 +110,8 @@ export default class Sphere {
       })
 
       this.linesMesh = new THREE.LineSegments(linegeometry, material)
+      
+      this.linesMesh.layers.set(this.layer)
       this.group.add(this.linesMesh)
       }
 
@@ -131,10 +147,10 @@ export default class Sphere {
         )
           particleData.velocity.z = -particleData.velocity.z
 
-        if (
-          this.effectController.limitConnections &&
-          particleData.numConnections >= this.effectController.maxConnections
-        )
+        // if (
+        //   this.effectController.limitConnections &&
+        //   particleData.numConnections >= this.effectController.maxConnections
+        // )
           continue
       }
 
@@ -143,12 +159,6 @@ export default class Sphere {
       this.linesMesh.geometry.attributes.color.needsUpdate = true
 
       this.pointCloud.geometry.attributes.position.needsUpdate = true
-
       // this.group.rotation.y = time * 0.1
       }
-      initRender(){
-        // this.group.rotation.y = time * 0.1
-      }
-
-      
 }

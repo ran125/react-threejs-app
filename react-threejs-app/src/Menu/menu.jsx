@@ -30,6 +30,7 @@ const WarningBanner =(props)=> {
 
   export default  class Menu extends Component{
      constructor(props) {
+        console.log(props)
         super(props);
         this.handleLoginClick = this.handleLoginClick.bind(this);
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
@@ -40,9 +41,11 @@ const WarningBanner =(props)=> {
     
      }
      handleLogoutClick(){
+        this.props.toggleCamera(1);
         this.setState({isLoggedIn: false,age:20,showWarning: !this.state.showWarning}); 
      }
      handleLoginClick(){
+        this.props.toggleCamera(0);
         this.setState({isLoggedIn: true,showWarning: !this.state.showWarning});
     }
     handelChange(e){
