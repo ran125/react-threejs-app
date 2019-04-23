@@ -9,7 +9,6 @@ export default class Sphere {
       }
       init(){
         this.group = new THREE.Group()
-        console.log(this.group)
         // this.group.layers.set(this.layer)
         this.initParticles();
         this.initLine();
@@ -49,7 +48,7 @@ export default class Sphere {
 
         for (var i = 0; i < maxParticleCount; i++) {
           var aa = -1;
-          if (i % 2 == 0) {
+          if (i % 2 === 0) {
             aa = 1;
           } else {
             aa = -1;

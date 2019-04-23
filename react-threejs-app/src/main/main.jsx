@@ -30,7 +30,7 @@ export default class Main extends Component{
       }
       toggleCamera(num){
         this.setState({num:num});
-        let hide_l =num =="0"?"1":"0"
+        let hide_l =num ==="0"?"1":"0"
         this.camera.layers.enable(num);
         this.camera.layers.disable(hide_l);
       }

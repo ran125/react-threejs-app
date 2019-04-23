@@ -7,7 +7,6 @@ import orbtCtrls from 'three-orbit-controls'
 
   //export default class ThreeScene extends Component{
   export default class ThreeScene {
- 
   constructor(props) {
   this.animatefn=null;
   }
