@@ -21,18 +21,23 @@ export default class Main extends Component{
         this.animate = threeScene.animate;
         this.scene =threeScene.scene;
         this.camera =threeScene.camera;
-        let cube = new Cube({scene:this.scene});
+        let cube = new Cube({scene:this.scene,threeScene:threeScene});
         cube.init();
         let sphere =new Sphere({scene:this.scene,threeScene:threeScene});
         sphere.init();
-        this.camera.layers.enable(0); // enabled by default
-        this.camera.layers.disable(1);
+        this.camera.layers.enable(1); // enabled by default
+        this.camera.layers.disable(0);
       }
       toggleCamera(num){
         this.setState({num:num});
         let hide_l =num ==="0"?"1":"0"
         this.camera.layers.enable(num);
         this.camera.layers.disable(hide_l);
+        this.resetScene();
+      }
+      //初始化场景
+      resetScene(){
+        this.camera.position.z = 4 
       }
       render(){
           return(<div id="webgl-box"><div id='WebGL-output'><canvas id="webgl" ></canvas></div><Menu toggleCamera = {(num)=>{this.toggleCamera(num)}} /></div>)

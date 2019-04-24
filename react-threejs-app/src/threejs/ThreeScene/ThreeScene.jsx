@@ -9,6 +9,7 @@ import orbtCtrls from 'three-orbit-controls'
   export default class ThreeScene {
   constructor(props) {
   this.animatefn=null;
+  this.layer =0;
   }
 
   //在组建输出到dom 后会执行componentdidmount() 钩子
@@ -38,7 +39,7 @@ import orbtCtrls from 'three-orbit-controls'
    }
 
    initRender() {
-    let canvas = document.getElementById( 'webgl' );
+    let canvas = document.getElementById('webgl');
     this.renderer = new THREE.WebGLRenderer({
       antialias: true, canvas: canvas
     });
@@ -62,12 +63,44 @@ import orbtCtrls from 'three-orbit-controls'
   isFn(obj) {
     return Object.prototype.toString.call(obj) === '[object Function]';
   }
-  setAnimateFn(fn){
-    this.animatefn =fn;
+  setAnimateFn(fn,layer){
+    if(layer>this.layer){
+      this.animatefn =fn;
+      this.layer =layer;
+    }
   }
   getAnimateFn(){
    return this.animatefn
   }
+
+  // limitFPS(){
+  //   window.requestAnimFrame = (function () {
+  //     return  window.requestAnimationFrame ||
+  //         window.webkitRequestAnimationFrame ||
+  //         window.mozRequestAnimationFrame ||
+  //         window.oRequestAnimationFrame ||
+  //         window.msRequestAnimationFrame
+  //   })();
+  //   var FPS = 30;//30 fps ，maximun 300 FPS   300 = requestAnimCount*5
+  //   var duration = 1/FPS*1000;//duration
+  //   var requestAnimCount = 5;//counter
+  //   var updateRequestAnimTime = function(t){//
+  //     if(requestAnimCount<5){
+  //         requestAnimCount+=5;//maximun 300 FPS  = requestAnimCount*5
+  //     }
+  //     window.requestAnimFrame(updateRequestAnimTime);
+  //   }
+  //   window.requestAnimFrame(updateRequestAnimTime);
+  //   setInterval(function(){
+  //     if(requestAnimCount < 0){
+  //         console.log('idle~');
+  //         return;
+  //     }
+  //     requestAnimCount--;
+  //     console.log('running');})
+  // }
+  //your main loop~;
+
  //组建从dom 中移除会调用componentWillUnmount 钩子函数
   //  componentWillUnmount(){
   //   //  _this =null;
