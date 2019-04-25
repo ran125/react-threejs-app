@@ -8,4 +8,6 @@
 
 4.球体的限制 drawcall.
 
+https://github.com/ran125/react-threejs-app/wiki
+
 持续更新
