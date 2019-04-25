@@ -7,8 +7,8 @@ export default class Sphere {
       this.layer =1;
       this.cu = props.threeScene;
 
-      this.maxParticleCount = 100
-      this.particleCount = 50
+      this.maxParticleCount = 300
+      this.particleCount = 150
       this.r = 100
       this.rHalf = this.r/2;
       this.particlesData =[];
@@ -30,9 +30,8 @@ export default class Sphere {
         // this.group.layers.set(this.layer)
         this.initParticles();
         this.initLine();
-        this.cu.setAnimateFn((fn)=>{this.initAnimation()},2)
+       
         this.initSphere();
-        this.cu.camera.position.z = 300
       }
       initSphere(){
         var material = new THREE.MeshBasicMaterial({
@@ -215,6 +214,9 @@ export default class Sphere {
 
       this.pointCloud.geometry.attributes.position.needsUpdate = true
       this.group.rotation.y += 0.01
+      }
 
+      transformAnimate(layer){
+        this.cu.setAnimateFn((fn)=>{this.initAnimation()},layer)
       }
 }

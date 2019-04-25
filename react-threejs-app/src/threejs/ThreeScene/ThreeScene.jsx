@@ -66,7 +66,6 @@ import orbtCtrls from 'three-orbit-controls'
   setAnimateFn(fn,layer){
     if(layer>this.layer){
       this.animatefn =fn;
-      this.layer =layer;
     }
   }
   getAnimateFn(){

@@ -11,7 +11,7 @@ export default class Sphere {
         this.initRoom();
         this.initGeometry();
         this.clock = new THREE.Clock();
-        this.cu.setAnimateFn((fn)=>{this.render()},1)
+        
       }
        initRoom(){
         var materials = [];
@@ -119,11 +119,11 @@ export default class Sphere {
         return mesh;
     }
     render(){
-
       var delta =5 * this.clock.getDelta();
       this.particleUniforms[ "offset" ].value+=0.001;
       this.particleUniforms[ "time" ].value += 0.02 * delta; 
-
-
+    }
+    transformAnimate(layer){
+      this.cu.setAnimateFn((fn)=>{this.render()},layer)
     }
 }
