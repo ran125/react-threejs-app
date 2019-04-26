@@ -64,7 +64,7 @@ import orbtCtrls from 'three-orbit-controls'
     return Object.prototype.toString.call(obj) === '[object Function]';
   }
   setAnimateFn(fn,layer){
-    if(layer>this.layer){
+    if(layer > this.layer){
       this.animatefn =fn;
     }
   }

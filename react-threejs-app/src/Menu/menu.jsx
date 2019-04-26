@@ -33,35 +33,32 @@ const LoginButton = (props) => {
         super(props);
         this.handleLoginClick = this.handleLoginClick.bind(this);
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
-        this.handelChange =this.handelChange.bind(this)
-        this.state = { isLoggedIn:true,sceneText1:"切换场景二",sceneText2:"切换场景一",showWarning:true,hint:"输入姓名哈",inputval:"12333" };
+        this.handleClick = this.handleClick.bind(this);
+        this.state = { sceneText1:"切换场景",sceneText2:"切换场景",showWarning:true,hint:"输入姓名哈",inputval:"12333",num:0 };
       }
      componentDidMount(){
     
      }
      handleLogoutClick(){
         this.props.toggleCamera(0);
-        this.setState({isLoggedIn: false,sceneText2:"切换场景一",showWarning: !this.state.showWarning}); 
+        this.setState({sceneText2:"切换场景一",showWarning: !this.state.showWarning}); 
      }
      handleLoginClick(){
         this.props.toggleCamera(1);
-        this.setState({isLoggedIn: true,showWarning: !this.state.showWarning});
+        this.setState({showWarning: !this.state.showWarning});
     }
-    handelChange(e){
-        this.setState({inputval:e.target.value})
+    handleClick(){
+      let num =this.state.num;
+      num++;
+      let layer = num % 3;
+     this.setState({num:num});
+     this.props.toggleCamera(layer);
     }
-     
+
     render(){
-        const isLoggedIn = this.state.isLoggedIn;
-        // const inputVal =this.state.inputval
         return(
-          <div>{isLoggedIn ? (
-              <div><LogoutButton onClick={this.handleLogoutClick} sceneText1={this.state.sceneText1} />
+              <div className="menubox"><LogoutButton onClick={this.handleClick} sceneText1={this.state.sceneText1}  />
              </div>
-            ) : (
-              <LoginButton onClick={this.handleLoginClick}  sceneText2 ={this.state.sceneText2}/>
-            )}
-            </div>
       )
         // return(
         //     <div>{isLoggedIn ? (

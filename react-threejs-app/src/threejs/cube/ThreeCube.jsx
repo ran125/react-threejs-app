@@ -121,9 +121,12 @@ export default class Sphere {
     render(){
       var delta =5 * this.clock.getDelta();
       this.particleUniforms[ "offset" ].value+=0.001;
-      this.particleUniforms[ "time" ].value += 0.02 * delta; 
+      this.particleUniforms[ "time" ].value += 0.02 * delta;
     }
     transformAnimate(layer){
+      if(layer ==1){
+        this.cu.camera.position.z = 4 ;
+      }
       this.cu.setAnimateFn((fn)=>{this.render()},layer)
     }
 }

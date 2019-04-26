@@ -5,13 +5,16 @@ import '../Menu/menu.css'
 import ThreeScene from '../threejs/ThreeScene/ThreeScene'
 import Cube from '../threejs/cube/ThreeCube'
 import Sphere from '../threejs/sphere/ThreeSphere'
+import Smoking from '../threejs/smoking/ThreeSmoking'
 import Menu from '../Menu/menu'
 
 export default class Main extends Component{
     constructor(props) {
         super(props);
         this.state ={
-          num:0
+          nums:[0,1,2],
+          num:1,
+          title:'动态更换颜色'
         }
       }
       //在组建输出到dom 后会执行componentdidmount() 钩子
@@ -23,38 +26,54 @@ export default class Main extends Component{
         this.camera =threeScene.camera;
         this.cube = new Cube({scene:this.scene,threeScene:threeScene});
         this.sphere =new Sphere({scene:this.scene,threeScene:threeScene});
+        this.Smoking =new Smoking({scene:this.scene,threeScene:threeScene})
         this.init();
+        this.cube.transformAnimate(1);
       }
       init(){
         this.cube.init();
         this.sphere.init();
-        this.camera.layers.enable(0); // enabled by default
-        this.camera.layers.disable(1);
-        this.cube.transformAnimate(1);
-        this.sphere.transformAnimate(0);
+        this.Smoking.init();
+       
       }
       toggleCamera(num){
-        this.setState({num:num});
-        let hide_l =(num ===0)?1:0;
-        this.camera.layers.enable(num);
-        this.camera.layers.disable(hide_l);
+        let title ="";
+        if(num ===0){
+          title ="动态更换颜色"
+        }
+        if(num ===1){
+          title ="球体drawcall"
+        }
+        if(num ===2){
+          title ="夕阳"
+        }
+        this.setState({num:num,title:title},()=>{this.state.nums.forEach((a)=>{this.initlayers(a)})}); 
         this.resetScene(num);
+      }
+      initlayers(num){
+        if(num == this.state.num){
+          this.camera.layers.enable(num); // enabled by default
+        }else{
+          this.camera.layers.disable(num);
+        }
       }
       //初始化场景
       resetScene(num){
-        if(num === 0){
-          this.camera.position.z = 4 ;
-          this.cube.layer =1;
-          this.cube.transformAnimate(1);
-          this.sphere.transformAnimate(0);
-        }else{
-          this.camera.position.z = 300;
-          this.sphere.layer =0;
-          this.cube.transformAnimate(0);
-          this.sphere.transformAnimate(1);
+        let rules ={
+          0:'cube',
+          1:"sphere",
+          2:"Smoking"
+        }
+        //this[rules[num]]
+        for(let prop in rules){
+          if(num ==prop){
+            this[rules[num]].transformAnimate(1);
+          }else{
+            this[rules[num]].transformAnimate(0);
+          }
         }
       }
       render(){
-          return(<div id="webgl-box"><div id='WebGL-output'><canvas id="webgl" ></canvas></div><Menu toggleCamera = {(num)=>{this.toggleCamera(num)}} /></div>)
+          return(<div id="webgl-box">{this.state.title}<div id='WebGL-output'><canvas id="webgl" ></canvas></div><Menu toggleCamera = {(num)=>{this.toggleCamera(num)}} num={this.state.num} /></div>)
         }
 }

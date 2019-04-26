@@ -217,6 +217,9 @@ export default class Sphere {
       }
 
       transformAnimate(layer){
+        if(layer ==1){
+          this.cu.camera.position.z = 300 ;
+        }
         this.cu.setAnimateFn((fn)=>{this.initAnimation()},layer)
       }
 }
