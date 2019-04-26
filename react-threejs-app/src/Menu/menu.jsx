@@ -48,11 +48,12 @@ const LoginButton = (props) => {
         this.setState({showWarning: !this.state.showWarning});
     }
     handleClick(){
-      let num =this.state.num;
+      let num =this.props.data.num;
       num++;
-      let layer = num % 3;
-     this.setState({num:num});
-     this.props.toggleCamera(layer);
+      let le =this.props.data.nums.length;
+      let layer = num % le;
+      this.setState({num:num});
+      this.props.toggleCamera(layer);
     }
 
     render(){

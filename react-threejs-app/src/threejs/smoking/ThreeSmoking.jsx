@@ -101,6 +101,9 @@ export default class Smoking {
       this.particleUniforms[ "u_time" ].value += 0.02; 
     }
     transformAnimate(layer){
+      if(layer ==1){
+        this.scene.background = new THREE.Color( 0xffffff );
+      }
       this.cu.setAnimateFn((fn)=>{this.render()},layer)
     }
 }

@@ -6,14 +6,15 @@ import ThreeScene from '../threejs/ThreeScene/ThreeScene'
 import Cube from '../threejs/cube/ThreeCube'
 import Sphere from '../threejs/sphere/ThreeSphere'
 import Smoking from '../threejs/smoking/ThreeSmoking'
+import Earth  from '../threejs/bolin/bolin'
 import Menu from '../Menu/menu'
 
 export default class Main extends Component{
     constructor(props) {
         super(props);
         this.state ={
-          nums:[0,1,2],
-          num:1,
+          nums:[0,1,2,3],
+          num:3,
           title:'动态更换颜色'
         }
       }
@@ -26,26 +27,31 @@ export default class Main extends Component{
         this.camera =threeScene.camera;
         this.cube = new Cube({scene:this.scene,threeScene:threeScene});
         this.sphere =new Sphere({scene:this.scene,threeScene:threeScene});
-        this.Smoking =new Smoking({scene:this.scene,threeScene:threeScene})
+        this.smoking =new Smoking({scene:this.scene,threeScene:threeScene})
+        this.earth = new Earth({scene:this.scene,threeScene:threeScene})
         this.init();
-        this.cube.transformAnimate(1);
+        // this.cube.transformAnimate(1);
+        this.toggleCamera(this.state.num);
       }
       init(){
         this.cube.init();
         this.sphere.init();
-        this.Smoking.init();
-       
+        this.smoking.init();
+        this.earth.init();
       }
       toggleCamera(num){
         let title ="";
-        if(num ===0){
+        if(num ==0){
           title ="动态更换颜色"
         }
-        if(num ===1){
+        if(num ==1){
           title ="球体drawcall"
         }
-        if(num ===2){
+        if(num ==2){
           title ="夕阳"
+        }
+        if(num ==3){
+          title ="地球"
         }
         this.setState({num:num,title:title},()=>{this.state.nums.forEach((a)=>{this.initlayers(a)})}); 
         this.resetScene(num);
@@ -53,6 +59,7 @@ export default class Main extends Component{
       initlayers(num){
         if(num == this.state.num){
           this.camera.layers.enable(num); // enabled by default
+          console.log(num,'显示')
         }else{
           this.camera.layers.disable(num);
         }
@@ -62,9 +69,9 @@ export default class Main extends Component{
         let rules ={
           0:'cube',
           1:"sphere",
-          2:"Smoking"
+          2:"smoking",
+          3:"earth"
         }
-        //this[rules[num]]
         for(let prop in rules){
           if(num ==prop){
             this[rules[num]].transformAnimate(1);
@@ -74,6 +81,6 @@ export default class Main extends Component{
         }
       }
       render(){
-          return(<div id="webgl-box">{this.state.title}<div id='WebGL-output'><canvas id="webgl" ></canvas></div><Menu toggleCamera = {(num)=>{this.toggleCamera(num)}} num={this.state.num} /></div>)
+          return(<div id="webgl-box">{this.state.title}<div id='WebGL-output'><canvas id="webgl" ></canvas></div><Menu toggleCamera = {(num)=>{this.toggleCamera(num)}} data={this.state} /></div>)
         }
 }
