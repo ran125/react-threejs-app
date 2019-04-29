@@ -3,17 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tweenjs/tween.js": "^17.3.0",
     "less": "^3.9.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "2.1.8",
+    "react-tween-state": "^0.1.5",
     "three": "^0.103.0",
     "three-fbx-loader": "^1.0.3",
+    "three-fbxloader-offical": "^1.0.0",
     "three-js": "^79.0.0",
     "three-orbit-controls": "^82.1.0",
     "three-orbitcontrols": "^2.102.1",
     "three-orbitcontrols-ts": "^0.1.2",
-    "three.js": "^0.77.1"
+    "three.js": "^0.77.1",
+    "tween": "^0.9.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,7 +36,10 @@
   ],
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "exports-loader": "^0.7.0",
+    "imports-loader": "^0.8.0"
+  },
   "author": "",
   "license": "ISC"
 }

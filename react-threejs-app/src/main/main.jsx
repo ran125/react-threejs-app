@@ -51,7 +51,7 @@ export default class Main extends Component{
           title ="夕阳"
         }
         if(num ==3){
-          title ="地球"
+          title ="地球-缩放到柏林街道"
         }
         this.setState({num:num,title:title},()=>{this.state.nums.forEach((a)=>{this.initlayers(a)})}); 
         this.resetScene(num);

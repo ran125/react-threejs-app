@@ -50,6 +50,7 @@ import orbtCtrls from 'three-orbit-controls'
    animate() {
     window.requestAnimationFrame(()=>{this.animate();});
     this.renderer.render(this.scene, this.camera );
+   
     if(this.isFn(this.animatefn)){
       this.animatefn();
     }
@@ -57,7 +58,6 @@ import orbtCtrls from 'three-orbit-controls'
   onWindowResize(){
     this.camera.aspect = this.width/this.height;
     this.camera.updateProjectionMatrix();
-  
     this.renderer.setSize( this.width, this.height );
   }
   isFn(obj) {
