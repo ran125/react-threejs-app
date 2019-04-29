@@ -16,7 +16,7 @@ export default class Earth {
       }
       init(){
         this.initEarth();
-        this.initBolin();
+        // this.initBolin();
         this.clock = new THREE.Clock();
         // this.getcameraPos();
         // this.initPathRoaming();
@@ -85,12 +85,12 @@ export default class Earth {
        }
        initBolin(){
         let  hemisphereLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-        hemisphereLight.position.set( 0, 0, 200 );
+        hemisphereLight.position.set( 0, 200, 0 );
         hemisphereLight.layers.set(this.layer);
         this.group.add( hemisphereLight );
         var loader = new FBXLoader();
 				loader.load(require('../../resources/models/bolin/bolin_3.FBX'), (object)=> {
-          //new BufferGeometry().fromGeometry( geom );
+          
           console.log(object);
           object.traverse((child)=>{this.initlayers(child)})
           object.scale.set(0.01,0.01,0.01);
@@ -110,8 +110,7 @@ export default class Earth {
        }
        getcameraPos(){
          setInterval(()=>{
-          console.log(this.cu.camera.position);
-          console.log(this.cu.orbitControls);
+        
          },3000)
        }
       render(){
@@ -120,6 +119,7 @@ export default class Earth {
         if(layer ==1){
           this.scene.background = new THREE.Color( 0xffffff );
           this.cu.camera.position.z = 100;
+          this.initBolin();
           // this.cu.camera.position.z = 50000;
         }
         this.cu.setAnimateFn((fn)=>{this.render()},layer)

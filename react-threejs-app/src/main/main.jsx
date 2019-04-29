@@ -14,7 +14,7 @@ export default class Main extends Component{
         super(props);
         this.state ={
           nums:[0,1,2,3],
-          num:3,
+          num:0,
           title:'动态更换颜色'
         }
       }
@@ -51,7 +51,7 @@ export default class Main extends Component{
           title ="夕阳"
         }
         if(num ==3){
-          title ="地球-缩放到柏林街道"
+          title ="地球"
         }
         this.setState({num:num,title:title},()=>{this.state.nums.forEach((a)=>{this.initlayers(a)})}); 
         this.resetScene(num);
@@ -72,6 +72,7 @@ export default class Main extends Component{
           2:"smoking",
           3:"earth"
         }
+        this.camera.position.set(0,0,0);
         for(let prop in rules){
           if(num ==prop){
             this[rules[num]].transformAnimate(1);
