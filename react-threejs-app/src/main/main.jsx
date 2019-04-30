@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import '../Menu/menu.css'
 // import '../threejs/cube/ThreeCube.css';
-
 import ThreeScene from '../threejs/ThreeScene/ThreeScene'
+import Event from '../main/event'
 import Cube from '../threejs/cube/ThreeCube'
 import Sphere from '../threejs/sphere/ThreeSphere'
 import Smoking from '../threejs/smoking/ThreeSmoking'
 import Earth  from '../threejs/bolin/bolin'
 import Menu from '../Menu/menu'
 
+
 export default class Main extends Component{
     constructor(props) {
         super(props);
         this.state ={
           nums:[0,1,2,3],
-          num:0,
+          num:3,
           title:'动态更换颜色'
         }
       }
@@ -25,10 +26,12 @@ export default class Main extends Component{
         this.animate = threeScene.animate;
         this.scene =threeScene.scene;
         this.camera =threeScene.camera;
+       
         this.cube = new Cube({scene:this.scene,threeScene:threeScene});
         this.sphere =new Sphere({scene:this.scene,threeScene:threeScene});
         this.smoking =new Smoking({scene:this.scene,threeScene:threeScene})
         this.earth = new Earth({scene:this.scene,threeScene:threeScene})
+        this.event = new Event({threeScene:threeScene,callback:this.earth.distanceMeasure});
         this.init();
         // this.cube.transformAnimate(1);
         this.toggleCamera(this.state.num);

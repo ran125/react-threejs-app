@@ -19,6 +19,7 @@ export default class Sphere {
         }
         var geometry = new THREE.BoxBufferGeometry( 3, 3, 3 );
         var mesh = new THREE.Mesh( geometry, materials );
+        mesh.name ='room';
         mesh.layers.set(this.layer)
         this.scene.add(mesh);               
        }
@@ -27,6 +28,7 @@ export default class Sphere {
         // var material =this.makeParticleMaterial();
         // var mesh = new THREE.Mesh( geometry, material );
         var mesh =this.makeParticleSystem(3);
+        mesh.name='togeo';
         mesh.layers.set(this.layer)
         this.scene.add( mesh );
        }

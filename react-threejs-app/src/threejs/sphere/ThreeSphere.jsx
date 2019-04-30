@@ -43,6 +43,7 @@ export default class Sphere {
           new THREE.SphereBufferGeometry(this.r, 18, 18),
           material
         )
+        helper.name ='helper';
         helper.layers.set(this.layer)
         this.group.add(helper)
         // this.scene.add( sphere );
@@ -91,6 +92,7 @@ export default class Sphere {
         particles.setDrawRange(0, this.particleCount)
         // create the particle system
       this.pointCloud = new THREE.Points(particles, pMaterial)
+      this.pointCloud.name ='pointCloud';
       this.pointCloud.layers.set(this.layer)
       this.group.add(this.pointCloud)
       }

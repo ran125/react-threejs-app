@@ -6,18 +6,26 @@ import  FBXLoader from 'three-fbxloader-offical';
 import SimplifyModifier from '../../common/modifiers/SimplifyModifier';
 const TWEEN = require('@tweenjs/tween.js');
 const modifier = new SimplifyModifier();
+let _this =null;
 export default class Earth {
     constructor(props) {
       // super(props);
       this.scene =props.scene;
       this.layer =3;
       this.cu = props.threeScene;
-	  	this.progress = 0;
+      this.progress = 0;
+      _this = this;
+      this.start =new THREE.Vector3();
+      this.end =new THREE.Vector3();
+      this.count =0;
+     
+    
       }
       init(){
         this.initEarth();
         // this.initBolin();
         this.clock = new THREE.Clock();
+        // this.addSphere(new THREE.Vector3(0,0,0))
         // this.getcameraPos();
         // this.initPathRoaming();
       }
@@ -29,6 +37,7 @@ export default class Earth {
           var material = new THREE.MeshBasicMaterial( { map: texture } ); 
           var mesh = new THREE.Mesh( geometry, material );
           mesh.layers.set(this.layer);
+          mesh.name='earth';
           this.group.add( mesh );
           });
        }
@@ -90,8 +99,7 @@ export default class Earth {
         this.group.add( hemisphereLight );
         var loader = new FBXLoader();
 				loader.load(require('../../resources/models/bolin/bolin_3.FBX'), (object)=> {
-          
-          console.log(object);
+          object.name ='bolin';
           object.traverse((child)=>{this.initlayers(child)})
           object.scale.set(0.01,0.01,0.01);
           object.layers.set(this.layer);
@@ -110,10 +118,58 @@ export default class Earth {
        }
        getcameraPos(){
          setInterval(()=>{
-        
          },3000)
        }
       render(){
+      }
+      //点击事件
+      distanceMeasure(obj){
+      if(obj.object.type =="Mesh"){
+        console.log(obj.point);
+        _this.addSphere(obj.point,obj.face.normal);
+        if(_this.count % 2 ==0){
+           obj.object.worldToLocal(_this.start.copy(obj.point));
+          // _this.start = obj.point;//世界坐标下的点
+        }else{
+          obj.object.worldToLocal(_this.end.copy(obj.point));
+          // _this.end =obj.point;
+          _this.drawLine(_this.start,_this.end);
+        }
+      }
+      _this.count++;
+      }
+      drawLine(start,end){
+       console.log(start,end);
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(start );
+        geometry.vertices.push(end );
+        // geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+					var material = new THREE.LineBasicMaterial( {
+						color: Math.random() * 0xffffff,
+						linewidth: 10
+					} );
+					var line = new THREE.Line( geometry, material );
+					line.scale.setScalar(1 / 3 );
+					this.scene.add( line );
+      }
+      addSphere(pos,normal){
+        let sphere =new THREE.SphereGeometry(0.3,32,32);
+        let material = new THREE.MeshBasicMaterial( {color: Math.random() * 0xffffff} );
+        let mesh =new THREE.Mesh( sphere, material );
+         mesh.position.copy(pos).add( normal);
+         sphere.computeBoundingBox(); //点击的线 不准
+
+        //  mesh.position.divideScalar( 0.3 ).floor().multiplyScalar( 0.3 ).addScalar( 0.15 );
+        // mesh.position.set(pos);
+        // var centroid = new THREE.Vector3();
+        // centroid.addVectors( geometry.boundingBox.min, geometry.boundingBox.max );
+        // centroid.multiplyScalar( 0.5 );
+        // mesh.position.divideScalar(centroid);
+        // centroid.applyMatrix4( mesh.matrixWorld );
+
+        mesh.layers.set(_this.layer);
+        mesh.name ='redsphere';
+        _this.group.add(mesh);
       }
       transformAnimate(layer){
         if(layer ==1){

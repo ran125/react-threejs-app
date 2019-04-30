@@ -3,8 +3,8 @@
 // import '../ThreeCube/ThreeCube.css';
 import * as THREE from 'three';
 import orbtCtrls from 'three-orbit-controls'
-  const OrbitControls = orbtCtrls(THREE);
-
+const OrbitControls = orbtCtrls(THREE);
+global.THREE = THREE
   //export default class ThreeScene extends Component{
   export default class ThreeScene {
   constructor(props) {
