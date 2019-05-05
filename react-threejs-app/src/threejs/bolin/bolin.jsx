@@ -1,9 +1,11 @@
 
 import * as THREE from 'three';
 // import FBXLoader from '../../common/FBXLoader';
-
 import  FBXLoader from 'three-fbxloader-offical';
 import SimplifyModifier from '../../common/modifiers/SimplifyModifier';
+import LineGeometry from '../../common/lines/LineGeometry'
+import Line2 from '../../common/lines/Line2'
+import LineMaterial from '../../common/lines/LineMaterial'
 const TWEEN = require('@tweenjs/tween.js');
 const modifier = new SimplifyModifier();
 let _this =null;
@@ -18,8 +20,9 @@ export default class Earth {
       this.start =new THREE.Vector3();
       this.end =new THREE.Vector3();
       this.count =0;
-     
-    
+      this.positions =[];
+      this.colors =[];
+      this.lineY =0.3;
       }
       init(){
         this.initEarth();
@@ -68,16 +71,16 @@ export default class Earth {
         // 相机位置设置为曲线上第i个顶点
         // // 相机观察点设置为第i个点的下一个点
         //{x: 0, y: 1.6985212642025218e-15, z: 27.738957312183373}
-       //Vector3 {x: 0.17204823682234968, y: -21.941742194514937, z: 12.052053002017162}
+       //Vector3 {x: 0.17204823682234968, y: -21.941742194514937, z:12.052053002017162}
        }
        initTween(){
-        new TWEEN.Tween(this.cu.camera.position)
-        .to({ x: 1, y: 1.8, z: 30.7 }, 1000)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .onUpdate(function(object) {
-          this.cu.camera.lookAt(new THREE.Vector3(this.x,this.y,this.z))
-        })
-        .start();
+        // new TWEEN.Tween(this.cu.camera.position)
+        // .to({ x: 1, y: 1.8, z: 30.7 }, 1000)
+        // .easing(TWEEN.Easing.Quadratic.Out)
+        // .onUpdate(function(object) {
+        //   this.cu.camera.lookAt(new THREE.Vector3(this.x,this.y,this.z))
+        // })
+        // .start();
         this.cu.camera.position.set(-2.9,3.12, 23.3);
         // this.cu.orbitControls.maxDistance = 35;
         // let lookBolinHouse = new TWEEN.Tween(this.cu.camera.position)
@@ -124,49 +127,44 @@ export default class Earth {
       }
       //点击事件
       distanceMeasure(obj){
-      if(obj.object.type =="Mesh"){
-        console.log(obj.point);
-        _this.addSphere(obj.point,obj.face.normal);
+        _this.addSphere(obj.point);
+        _this.positions.push(obj.point.x,_this.lineY,obj.point.z);
+        _this.colors.push(1.0,1.0,1.0);
         if(_this.count % 2 ==0){
-           obj.object.worldToLocal(_this.start.copy(obj.point));
-          // _this.start = obj.point;//世界坐标下的点
-        }else{
-          obj.object.worldToLocal(_this.end.copy(obj.point));
-          // _this.end =obj.point;
-          _this.drawLine(_this.start,_this.end);
-        }
-      }
+         _this.start = obj.point;//世界坐标下的点
+       }else{
+         _this.end =obj.point;
+         _this.drawLine(_this.start,_this.end);
+       }
       _this.count++;
       }
-      drawLine(start,end){
-       console.log(start,end);
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(start );
-        geometry.vertices.push(end );
+      drawLine(){
+        var geometry = new LineGeometry();
+        let le =_this.positions.length;
+        let linepos =_this.positions.slice(le-6,le)
+        let color =_this.colors.slice(le-6,le)
+        geometry.setPositions(linepos );
+        geometry.setColors(color );
+        // geometry.vertices.push(start );
+        // geometry.vertices.push(end );
         // geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
-					var material = new THREE.LineBasicMaterial( {
-						color: Math.random() * 0xffffff,
-						linewidth: 10
-					} );
-					var line = new THREE.Line( geometry, material );
-					line.scale.setScalar(1 / 3 );
-					this.scene.add( line );
+        var material = new LineMaterial( {
+          color: 0xff0000,
+					linewidth: 0.008, // in pixels
+					vertexColors: THREE.VertexColors
+        } );
+        var line = new Line2( geometry, material );
+        // line.computeLineDistances();
+        line.layers.set(_this.layer);
+        this.scene.add( line );
+        // _this.positions =[];
       }
-      addSphere(pos,normal){
+      addSphere(pos){
         let sphere =new THREE.SphereGeometry(0.3,32,32);
         let material = new THREE.MeshBasicMaterial( {color: Math.random() * 0xffffff} );
         let mesh =new THREE.Mesh( sphere, material );
-         mesh.position.copy(pos).add( normal);
-         sphere.computeBoundingBox(); //点击的线 不准
-
-        //  mesh.position.divideScalar( 0.3 ).floor().multiplyScalar( 0.3 ).addScalar( 0.15 );
-        // mesh.position.set(pos);
-        // var centroid = new THREE.Vector3();
-        // centroid.addVectors( geometry.boundingBox.min, geometry.boundingBox.max );
-        // centroid.multiplyScalar( 0.5 );
-        // mesh.position.divideScalar(centroid);
-        // centroid.applyMatrix4( mesh.matrixWorld );
-
+        mesh.position.copy(pos);
+        mesh.position.y =_this.lineY;
         mesh.layers.set(_this.layer);
         mesh.name ='redsphere';
         _this.group.add(mesh);

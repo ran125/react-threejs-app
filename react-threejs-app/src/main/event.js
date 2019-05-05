@@ -20,11 +20,9 @@ export default class Event {
       }
       //初始化射线
       initRay(){
-    
-    //    raycaster.setFromCamera(mouse, this.camera);
-    //     //    //计算射线相机到的对象，可能有多个对象，因此返回的是一个数组，按离相机远近排列
-    //    let   intersectscube = raycaster.intersectObjects(this.scene, true);
-
+      //    raycaster.setFromCamera(mouse, this.camera);
+      //     //    //计算射线相机到的对象，可能有多个对象，因此返回的是一个数组，按离相机远近排列
+      //    let   intersectscube = raycaster.intersectObjects(this.scene, true);
       }
       //事件处理
       processing(){
@@ -70,18 +68,13 @@ export default class Event {
         event.preventDefault();
         mouse.x = event.touches[0].clientX / this.width * 2 - 1;
         mouse.y = -(event.touches[0].clientY /this.height) * 2 + 1;
-        // startX = event.touches[0].pageX;
-        // startY = event.touches[0].pageY;
-        // endX = event.touches[0].pageX;
-        // endY = event.touches[0].pageY;
-        // goMove = true;
-        // // console.log('start', startX, startY)
-        // //从相机发射一条射线，经过鼠标点击位置
-        this.raycaster.setFromCamera(mouse, this.camera);
+        this.raycaster.setFromCamera(mouse,this.camera);
         // //计算射线相机到的对象，可能有多个对象，因此返回的是一个数组，按离相机远近排列
         let  intersects = this.raycaster.intersectObjects(this.scene.children, true);
-        if(intersects.length>0){
+        if(intersects.length > 0){
             this.callback(intersects[0])
+        }else{
+          console.log('没有拾取到物体')
         }
       }
       onTouchmove(event) {

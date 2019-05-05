@@ -9,7 +9,6 @@ import Smoking from '../threejs/smoking/ThreeSmoking'
 import Earth  from '../threejs/bolin/bolin'
 import Menu from '../Menu/menu'
 
-
 export default class Main extends Component{
     constructor(props) {
         super(props);
