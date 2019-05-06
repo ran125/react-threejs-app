@@ -157,7 +157,15 @@ export default class Earth {
         // line.computeLineDistances();
         line.layers.set(_this.layer);
         this.scene.add( line );
-        // _this.positions =[];
+
+        let tex =this.makecanvas();
+        var materialC = new THREE.SpriteMaterial( { map: tex, color: 0xffffff, fog: true } );
+        var sprite = new THREE.Sprite( materialC );
+        sprite.position.set(_this.positions[le-2], _this.positions[le-1], _this.positions[le] );
+        sprite.position.normalize();
+        sprite.layers.set(_this.layer);
+        this.scene.add( sprite );
+        // sprite.position.multiplyScalar( radius );
       }
       addSphere(pos){
         let sphere =new THREE.SphereGeometry(0.3,32,32);
@@ -168,6 +176,30 @@ export default class Earth {
         mesh.layers.set(_this.layer);
         mesh.name ='redsphere';
         _this.group.add(mesh);
+      }
+      makecanvas(){
+				let canvas = document.createElement( 'canvas' );
+				canvas.width = 128;
+				canvas.height = 128;
+
+				var context = canvas.getContext( '2d' );
+				var gradient = context.createRadialGradient(
+					canvas.width / 2,
+					canvas.height / 2,
+					0,
+					canvas.width / 2,
+					canvas.height / 2,
+					canvas.width / 2
+				);
+				gradient.addColorStop( 0.1, 'rgba(210,210,210,1)' );
+				gradient.addColorStop( 1, 'rgba(255,255,255,1)' );
+
+				context.fillStyle = gradient;
+				context.fillRect( 0, 0, canvas.width, canvas.height );
+
+        var texture = new THREE.CanvasTexture( canvas );
+
+        return texture;
       }
       transformAnimate(layer){
         if(layer ==1){
