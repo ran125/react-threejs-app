@@ -7,6 +7,7 @@ import Cube from '../threejs/cube/ThreeCube'
 import Sphere from '../threejs/sphere/ThreeSphere'
 import Smoking from '../threejs/smoking/ThreeSmoking'
 import Earth  from '../threejs/bolin/bolin'
+import Splat from '../threejs/splatting/ThreeSplat'
 import Menu from '../Menu/menu'
 
 export default class Main extends Component{
@@ -14,7 +15,7 @@ export default class Main extends Component{
         super(props);
         this.state ={
           nums:[0,1,2,3],
-          num:3,
+          num:4,
           title:'动态更换颜色'
         }
       }
@@ -30,6 +31,7 @@ export default class Main extends Component{
         this.sphere =new Sphere({scene:this.scene,threeScene:threeScene});
         this.smoking =new Smoking({scene:this.scene,threeScene:threeScene})
         this.earth = new Earth({scene:this.scene,threeScene:threeScene})
+        this.splat = new Splat({scene:this.scene,threeScene:threeScene})
         this.event = new Event({threeScene:threeScene,callback:this.earth.distanceMeasure});
         this.init();
         // this.cube.transformAnimate(1);
@@ -40,6 +42,7 @@ export default class Main extends Component{
         this.sphere.init();
         this.smoking.init();
         this.earth.init();
+        this.splat.init();
       }
       toggleCamera(num){
         let title ="";
@@ -54,6 +57,9 @@ export default class Main extends Component{
         }
         if(num ==3){
           title ="地球"
+        }
+        if(num ==4){
+          title ="地形"
         }
         this.setState({num:num,title:title},()=>{this.state.nums.forEach((a)=>{this.initlayers(a)})}); 
         this.resetScene(num);
@@ -72,7 +78,8 @@ export default class Main extends Component{
           0:'cube',
           1:"sphere",
           2:"smoking",
-          3:"earth"
+          3:"earth",
+          4:"splat"
         }
         this.camera.position.set(0,0,0);
         for(let prop in rules){
